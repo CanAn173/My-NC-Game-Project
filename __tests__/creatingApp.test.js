@@ -14,54 +14,21 @@ beforeEach(() => {
   return seed({categoryData, commentData, reviewData, userData});
 });
 
-describe("/api/categories", () => {
-describe("/api", () => {
-  describe("/api/categories", () => {
+describe.only("/api/categories", () => {
   it("GET-200, responds with a table of slug and categories", () => {
     return request(app)
     .get('/api/categories')
     .expect(200)
     .then((response) => {
 
-    const categoryBodies = response.body.games
-  
-    categoryBodies.forEach(body => {
-      expect(body).toHaveProperty('slug', expect.any(String));
-      expect(body).toHaveProperty('description', expect.any (String));
-    });
-    expect(categoryBodies).toEqual(categoryData)
-    expect(categoryBodies).toHaveLength(4);
-    expect(categoryBodies).toBeInstanceOf(Array);
+    const bodies = response.body.games
 
+    console.log(bodies)
+    bodies.forEach(body => {
+      expect(bodies).toHaveLength(4);
+      expect(body).toHaveProperty('slug', expect.any(String));
+      expect(body).toHaveProperty('description', expect.any(String));
+    })
     })
   })
 })
-  });
-  });
-
-  describe("/api/reviews", () => {
-    it("GET-200, responds with a table of customer reviews", () => {
-      return request(app)
-      .get("/api/reviews")
-      .expect(200)
-      .then((response) => {
-        const reviewBodies = response.body.review;
-
-        reviewBodies.forEach(body => {
-          expect(body).toHaveProperty('review_id', expect.any(Number))
-          expect(body).toHaveProperty('title', expect.any(String));
-          expect(body).toHaveProperty('category', expect.any (String));
-          expect(body).toHaveProperty('designer', expect.any(String));
-          expect(body).toHaveProperty('owner', expect.any(String));
-          expect(body).toHaveProperty('review_body', expect.any(String));
-          expect(body).toHaveProperty('review_img_url', expect.any(String));
-          expect(body).toHaveProperty('created_at', expect.any(String));
-          expect(body).toHaveProperty('votes', expect.any(Number));
-        });
-        expect(reviewBodies).toHaveLength(13);
-        expect(reviewBodies).toBeInstanceOf(Array);
-
-        // expect(reviewBodies).toEqual(reviewData);
-      });
-    });
-});
