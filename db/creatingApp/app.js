@@ -2,6 +2,7 @@ const express = require("express");
 const {getGameCategories, getCustomerReviews, getCustomerReviewsById} = require("./controller");
 const {error400Status, error404Status, error500Status} = require('./errorHandling');
 
+
 const app = express();
 
 app.get("/api/categories", getGameCategories);
