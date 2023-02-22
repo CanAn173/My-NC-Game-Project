@@ -38,3 +38,7 @@ exports.getReviewsById = (review_id) => {
     return result.rows[0];
   })
 }
+
+// exports.getCommentsById = (review_id) => {
+//   return db.query()
+// }

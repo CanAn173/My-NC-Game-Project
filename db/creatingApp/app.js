@@ -1,5 +1,5 @@
 const express = require("express");
-const {getGameCategories, getCustomerReviews, getCustomerReviewsById} = require("./controller");
+const {getGameCategories, getCustomerReviews, getCustomerReviewsById, getCommentsByReviewId} = require("./controller");
 const {error400Status, error404Status, error500Status} = require('./errorHandling');
 
 
@@ -10,6 +10,8 @@ app.get("/api/categories", getGameCategories);
 app.get("/api/reviews", getCustomerReviews);
 
 app.get("/api/reviews/:review_id", getCustomerReviewsById);
+
+// app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 
 app.use(error400Status);
 
