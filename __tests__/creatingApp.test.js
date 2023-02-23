@@ -93,15 +93,38 @@ describe("/api", () => {
 
       });
     });
-  //   test("404-GET-api/reviews/review_id", () => {
-  //     return request(app)
-  //     .get('/api/reviews/100000')
-  //     .expect(404);
-  //   });
-  //   it("400-GET-api/reviews/:review_id", () => {
-  //     return request(app)
-  //     .get('/api/reviews/one')
-  //     .expect(400)
-  // });
+    test("404-GET-api/reviews/:review_id", () => {
+      return request(app)
+      .get('/api/reviews/100000')
+      .expect(404);
+    });
+    it("400-GET-api/reviews/:review_id", () => {
+      return request(app)
+      .get('/api/reviews/one')
+      .expect(400)
   });
+  });
+
+  describe("/api/reviews/:review_id/comments", () => {
+    it("GET-200, repond with a table of comment using review id", () => {
+      return request(app)
+      .get("/api/reviews/3/comments")
+      .expect(200)
+      .then((response) => {
+        const commentBodies = response.body.result
+
+        expect(commentBodies.length > 0).toBe(true);
+
+        commentBodies.forEach((body) => {
+          
+          expect(body).toHaveProperty('body', expect.any(String));
+          expect(body).toHaveProperty('votes', expect.any(Number));
+          expect(body).toHaveProperty('author', expect.any(String));
+          expect(body).toHaveProperty('review_id', 3);
+          expect(body).toHaveProperty('created_at', expect.any(String));
+        });
+      });
+   });
+  });
+
 });

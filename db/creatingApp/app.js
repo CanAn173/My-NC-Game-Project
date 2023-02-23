@@ -11,7 +11,7 @@ app.get("/api/reviews", getCustomerReviews);
 
 app.get("/api/reviews/:review_id", getCustomerReviewsById);
 
-// app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
+app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 
 app.use(error400Status);
 
