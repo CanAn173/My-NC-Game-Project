@@ -39,7 +39,6 @@ exports.getCommentsByReviewId = (request, response, next) => {
   getCommentById(review_id)
 
   .then((result) => {
-    console.log(result)
 
     response.status(200).send({ result });
 

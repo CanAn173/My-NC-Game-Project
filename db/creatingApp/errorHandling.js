@@ -17,7 +17,6 @@ response.status(error.status).send({msg: error.msg});
 
 exports.error500Status = ((error, request, response, next) => {
 
-  console.log(error);
   response.status(500).send({msg: 'Internal Server Error'});
 
 })
