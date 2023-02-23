@@ -8,6 +8,10 @@ exports.getAllGames = () => {
   )
   .then((result) => {
 
+    if(result.rows.length === 0) {
+      return Promise.reject({status: 404, msg: 'categories not found'})
+    }
+
     return result.rows;
   })
 }
@@ -35,10 +39,25 @@ exports.getReviewsById = (review_id) => {
   )
   .then((result) => {
 
+    if(result.rows.length === 0) {
+      return Promise.reject({status: 404, msg: 'categories not found'})
+    }
+
     return result.rows[0];
   })
 }
 
-// exports.getCommentsById = (review_id) => {
-//   return db.query()
-// }
+exports.getCommentById = (review_id) => {
+  return db.query(
+    `
+    SELECT * FROM comments WHERE review_id = $1;
+    `
+    ,
+    [review_id]
+  )
+  .then((result) => {
+
+
+    return result.rows
+  })
+}
