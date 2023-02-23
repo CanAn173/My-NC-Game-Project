@@ -24,6 +24,10 @@ exports.getReviews = () => {
   )
   .then((result) => {
 
+    if(result.rows.length === 0) {
+      return Promise.reject({status: 404, msg: 'categories not found'})
+    }
+
     return result.rows
   })
 }
@@ -61,3 +65,17 @@ exports.getCommentById = (review_id) => {
     return result.rows
   })
 }
+
+// exports.postReviewsById = (review_id) => {
+// return db.query(
+//   `
+  
+//   `,
+//   [review_id]
+// )
+// .then((result) => {
+  
+//   return result.rows
+
+// })
+// }
