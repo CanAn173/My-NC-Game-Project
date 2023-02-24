@@ -1,6 +1,6 @@
 
-const {getAllGames, getReviews, getReviewsById, getCommentById, postCommentById} = require("./models");
 
+const {getAllGames, getReviews, getReviewsById, getCommentById, postCommentById} = require("./models");
 
 exports.getGameCategories = (request, response, next) => {
   getAllGames()

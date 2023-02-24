@@ -3,7 +3,6 @@ const {getGameCategories, getCustomerReviews, getCustomerReviewsById, getComment
 
 const {error400Status, error404Status, error500Status, customErrorStatus} = require('./errorHandling');
 
-
 const app = express();
 
 app.use(express.json());

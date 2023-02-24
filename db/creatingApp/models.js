@@ -24,6 +24,10 @@ exports.getReviews = () => {
   )
   .then((result) => {
 
+    if(result.rows.length === 0) {
+      return Promise.reject({status: 404, msg: 'categories not found'})
+    }
+
     return result.rows
   })
 }
@@ -90,3 +94,4 @@ exports.postCommentById = (review_id, {userName, body}) => {
 }
 // create new string for db
 // insert values into existing db
+
