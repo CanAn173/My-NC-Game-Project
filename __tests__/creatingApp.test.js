@@ -168,7 +168,7 @@ describe("/api", () => {
       });
     });
 
-    test("404-POST-api/reviews/:review_id/comments", () => {
+    test("404-responds with error 404, due to non-existing path", () => {
 
       const commentToSend = 
       {
@@ -193,7 +193,7 @@ describe("/api", () => {
       
     });
 
-    test("400-POST-api-reviews/:review_id/comments", () => {
+    test("400-responds with error 400 due to invalid path", () => {
       const commentToSend =
         {
           userName: 'mallionaire',
@@ -213,14 +213,31 @@ describe("/api", () => {
             msg: 'Bad Request'
           }
         )
-      })
-    })
+      });
+    });
+
+    test("404-should responds with error 404, due to missing properties", () => {
+
+      const commentToSend = {
+        body: 'I enjoy coding?'
+      };
+
+      return request(app)
+      .post('/api/reviews/2/comments')
+      .send(commentToSend)
+      .expect(404)
+      .then((response) => {
+        
+        const receivedComment = response.body
+
+        expect(receivedComment).toMatchObject(
+          {
+            msg: 'Not found'
+          }
+        )
+      });
+    });
   });
 
 
-  /*
-  status that checks uneccessary keys (201);
-  status for whether an author/user exist (404);
-  status for invalid object (400);
-  */
 });

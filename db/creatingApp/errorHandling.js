@@ -8,7 +8,7 @@ response.status(400).send({msg: 'Bad Request'});
 })
 
 exports.error404Status = ((error, request, response, next) => {
-  if (error.code === '23503') {
+  if (error.code === '23502' || error.code === '23503') {
     response.status(404).send({msg: 'Not found'})
   } else {
     next(error);
