@@ -1,5 +1,6 @@
 const db = require('../connection');
 
+// GET-/api/categories
 exports.getAllGames = () => {
   return db.query(
     `
@@ -9,13 +10,14 @@ exports.getAllGames = () => {
   .then((result) => {
 
     if(result.rows.length === 0) {
-      return Promise.reject({status: 404, msg: 'categories not found'})
+      return Promise.reject({status: 404, msg: 'not found'})
     }
 
     return result.rows;
   })
 }
 
+// GET-/api/reviews
 exports.getReviews = () => {
   return db.query(
     `
@@ -25,13 +27,14 @@ exports.getReviews = () => {
   .then((result) => {
 
     if(result.rows.length === 0) {
-      return Promise.reject({status: 404, msg: 'categories not found'})
+      return Promise.reject({status: 404, msg: 'not found'})
     }
 
     return result.rows
   })
 }
 
+// GET-/api/reviews/:review_id
 exports.getReviewsById = (review_id) => {
 
   return db.query(
@@ -44,13 +47,14 @@ exports.getReviewsById = (review_id) => {
   .then((result) => {
 
     if(result.rows.length === 0) {
-      return Promise.reject({status: 404, msg: 'categories not found'})
+      return Promise.reject({status: 404, msg: 'not found'})
     }
 
     return result.rows[0];
   })
 }
 
+// GET-api/review/:review_id/comments
 exports.getCommentById = (review_id) => {
   return db.query(
     `
@@ -62,13 +66,14 @@ exports.getCommentById = (review_id) => {
   .then((result) => {
 
     if(result.rows.length === 0) {
-      return Promise.reject({status: 404, msg: 'categories not found'})
+      return Promise.reject({status: 404, msg: 'not found'})
     }
 
     return result.rows
   })
 }
 
+// POST-/api/reviews/:review_id/comments
 exports.postCommentById = (review_id, {userName, body}) => {
 
   return db.query(
@@ -86,12 +91,33 @@ exports.postCommentById = (review_id, {userName, body}) => {
 
     if(result.rows.length === 0) {
 
-      return Promise.reject({status: 404, msg: 'reviewID not found'})
+      return Promise.reject({status: 404, msg: 'Not found'})
     }
     
     return result.rows[0];
   })
 }
-// create new string for db
-// insert values into existing db
 
+// PATCH-/api/reviews/:review_id
+exports.changeInVotes = (review_id, { inc_votes }) => {
+
+  return db.query(
+    `
+    UPDATE reviews
+    SET
+    votes = votes + $1 WHERE review_id = $2
+    RETURNING *;
+    `
+    ,
+    [inc_votes, review_id]
+  )
+  .then((result) => {
+
+    if(result.rows.length === 0) {
+
+      return Promise.reject({status: 404, msg: 'not found'})
+    }
+    
+    return result.rows[0];
+  });
+}
