@@ -79,7 +79,7 @@ describe("/api", () => {
       .get("/api/reviews/1")
       .expect(200)
       .then((response) => {
-        const body = response.body.result;
+        const body = response.body.customerReviews;
         
           expect(body).toHaveProperty('review_id', expect.any(Number))
           expect(body).toHaveProperty('title', expect.any(String));
@@ -105,13 +105,13 @@ describe("/api", () => {
   });
   });
 
-  describe("/api/reviews/:review_id/comments", () => {
+  describe("GET-/api/reviews/:review_id/comments", () => {
     it("GET-200, repond with a table of comment using review id", () => {
       return request(app)
       .get("/api/reviews/3/comments")
       .expect(200)
       .then((response) => {
-        const commentBodies = response.body.result
+        const commentBodies = response.body.commentsById
 
         expect(commentBodies.length > 0).toBe(true);
 
@@ -125,6 +125,102 @@ describe("/api", () => {
         });
       });
    });
+
+   test("404-GET-api/reviews/:review_id/comments", () => {
+    return request(app)
+    .get('/api/reviews/100000/comment')
+    .expect(404);
   });
 
+  it("400-GET-api/reviews/:review_id/comments", () => {
+    return request(app)
+    .get('/api/reviews/one/comments')
+    .expect(400)
+  });
+ });
+
+  describe('POST-/api/reviews/:review_id/comments', () => {
+    it("POST-201, responds with table of only username and body", () => {
+      const commentToSend = 
+      {
+        userName: "bainesface",
+        body: 'I enjoy coding?'
+      };
+      
+      return request(app)
+      .post("/api/reviews/3/comments")
+      .send(commentToSend)
+      .expect(201)
+      .then((response) => {
+
+      const receivedComment = response.body.comment
+
+      expect(receivedComment).toMatchObject(
+        {
+          author: 'bainesface',
+          votes: expect.any(Number),
+          body: 'I enjoy coding?',
+          review_id: 3,
+          created_at: expect.any(String)
+        }
+      )
+
+      });
+    });
+
+    test("404-POST-api/reviews/:review_id/comments", () => {
+
+      const commentToSend = 
+      {
+        userName: 'mallionaire',
+        body: 'I enjoy coding?'
+      };
+
+      return request(app)
+      .post('/api/reviews/10000/comments')
+      .send(commentToSend)
+      .expect(404)
+      .then((response) => {
+        
+        const receivedComment = response.body
+
+        expect(receivedComment).toMatchObject(
+          {
+            msg: 'Not found'
+          }
+        )
+      })
+      
+    });
+
+    test("400-POST-api-reviews/:review_id/comments", () => {
+      const commentToSend =
+        {
+          userName: 'mallionaire',
+          body: 'I enjoy coding?'
+        }
+    
+      return request(app)
+      .post("/api/reviews/one/comments")
+      .send(commentToSend)
+      .expect(400)
+      .then((response) => {
+
+        const receivedComment = response.body
+
+        expect(receivedComment).toMatchObject(
+          {
+            msg: 'Bad Request'
+          }
+        )
+      })
+    })
+  });
+
+
+  /*
+  status that checks uneccessary keys (201);
+  status for whether an author/user exist (404);
+  status for invalid object (400);
+  */
 });

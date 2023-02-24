@@ -1,5 +1,5 @@
 
-const {getAllGames, getReviews, getReviewsById, getCommentById} = require("./models");
+const {getAllGames, getReviews, getReviewsById, getCommentById, postCommentById} = require("./models");
 
 
 exports.getGameCategories = (request, response, next) => {
@@ -27,8 +27,8 @@ exports.getCustomerReviewsById = (request, response, next) => {
   const { review_id } = request.params;
   getReviewsById(review_id)
 
-  .then((result) => {
-    response.status(200).send({ result });
+  .then((customerReviews) => {
+    response.status(200).send({ customerReviews });
   })
   .catch((error) => {
     next(error);
@@ -40,9 +40,25 @@ exports.getCommentsByReviewId = (request, response, next) => {
   const { review_id } = request.params;
   getCommentById(review_id)
 
-  .then((result) => {
+  .then((commentsById) => {
 
-    response.status(200).send({ result });
+    response.status(200).send({ commentsById });
+
+  })
+  .catch((error) => {
+    next(error);
+  })
+}
+
+exports.postCustomerReviewsById = (request, response, next) => {
+  const {review_id} = request.params;
+  const newBody = request.body;
+
+  postCommentById(review_id, newBody)
+
+  .then((comment) => {
+    
+    response.status(201).send({ comment });
 
   })
   .catch((error) => {
