@@ -239,6 +239,7 @@ describe("/api", () => {
     });
   });
 
+
   describe('PATCH-/api/reviews/:review_id', () => {
     it('200-should respond with votes updated within table reviews', () => {
 
@@ -269,7 +270,9 @@ describe("/api", () => {
       });
     });
 
-    test('400-should respond with error due to invalid paths', () => {
+    
+
+    test('400-should respond with error 400 due to invalid paths', () => {
       const addedVotes = { inc_votes: 9 };
 
       return request(app)
@@ -282,8 +285,9 @@ describe("/api", () => {
         expect(currentVotes).toMatchObject({msg: 'Bad Request'});
       });
     });
+    
 
-    test('404-should respond with error due to invalid paths', () => {
+    test('404-should respond with error 404 due to invalid paths', () => {
       const addedVotes = { inc_votes: 9 };
 
       return request(app)
@@ -298,6 +302,22 @@ describe("/api", () => {
       });
     });
   });
-  
+
+  test('400-should respond with error 400 due to incorrect properties of inc_votes', () => {
+    const addedVotes = { inc_votes: 'nine' };
+
+    return request(app)
+    .patch('/api/reviews/3')
+    .send(addedVotes)
+    .expect(400)
+    .then((response) => {
+      const currentVotes = response.body
+
+      expect(currentVotes).toMatchObject({msg: 'Bad Request'});
+
+    });
+  });
+
 
 });
+  
