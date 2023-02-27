@@ -1,7 +1,14 @@
 
 
-const {getAllGames, getReviews, getReviewsById, getCommentById, postCommentById} = require("./models");
+const {getAllGames, 
+getReviews, 
+getReviewsById, 
+getCommentById, 
+postCommentById,
+changeInVotes
+} = require("./models");
 
+// GET-/api/categories
 exports.getGameCategories = (request, response, next) => {
   getAllGames()
     .then((games) => {
@@ -13,6 +20,7 @@ exports.getGameCategories = (request, response, next) => {
     })
 };
 
+// GET-/api/reviews
 exports.getCustomerReviews = (request, response, next) => {
   getReviews()
     .then((review) => {
@@ -23,6 +31,7 @@ exports.getCustomerReviews = (request, response, next) => {
     })
 };
 
+// GET-/api/reviews/:review_id
 exports.getCustomerReviewsById = (request, response, next) => {
   const { review_id } = request.params;
   getReviewsById(review_id)
@@ -35,7 +44,7 @@ exports.getCustomerReviewsById = (request, response, next) => {
   })
 };
 
-
+// GET-/api/reviews/:review_id/comments
 exports.getCommentsByReviewId = (request, response, next) => {
   const { review_id } = request.params;
   getCommentById(review_id)
@@ -50,6 +59,7 @@ exports.getCommentsByReviewId = (request, response, next) => {
   })
 }
 
+// POST-/api/reviews/:review_id/comments
 exports.postCustomerReviewsById = (request, response, next) => {
   const {review_id} = request.params;
   const newBody = request.body;
@@ -60,6 +70,23 @@ exports.postCustomerReviewsById = (request, response, next) => {
     
     response.status(201).send({ comment });
 
+  })
+  .catch((error) => {
+    next(error);
+  })
+}
+
+// PATCH-/api/reviews/:review_id
+exports.updatedVotesById = (request, response, next) => {
+  const { review_id } = request.params;
+  const newVotes = request.body;
+
+  changeInVotes(review_id, newVotes)
+
+  .then((review) => {
+
+    response.status(200).send({ review });
+    
   })
   .catch((error) => {
     next(error);

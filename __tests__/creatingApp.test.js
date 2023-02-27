@@ -240,4 +240,84 @@ describe("/api", () => {
   });
 
 
+  describe('PATCH-/api/reviews/:review_id', () => {
+    it('200-should respond with votes updated within table reviews', () => {
+
+      const addedVotes = { inc_votes: 9 };
+
+      return request(app)
+      .patch('/api/reviews/3')
+      .send(addedVotes)
+      .expect(200)
+      .then((response) => {
+        
+        const currentVotes = response.body.review
+        
+        expect(currentVotes).toMatchObject(
+          {
+            review_id: 3,
+            title: expect.any(String),
+            category: expect.any(String),
+            designer: expect.any(String),
+            owner: expect.any(String),
+            review_body: expect.any(String),
+            review_img_url: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number)
+          })
+
+        expect(currentVotes.votes).toBe(14);
+      });
+    });
+
+    
+
+    test('400-should respond with error 400 due to invalid paths', () => {
+      const addedVotes = { inc_votes: 9 };
+
+      return request(app)
+      .patch('/api/reviews/three')
+      .send(addedVotes)
+      .expect(400)
+      .then((response) => {
+        const currentVotes = response.body
+
+        expect(currentVotes).toMatchObject({msg: 'Bad Request'});
+      });
+    });
+    
+
+    test('404-should respond with error 404 due to invalid paths', () => {
+      const addedVotes = { inc_votes: 9 };
+
+      return request(app)
+      .patch('/api/reviews/20')
+      .send(addedVotes)
+      .expect(404)
+      .then((response) => {
+        const currentVotes = response.body
+
+        expect(currentVotes).toMatchObject({msg: 'not found'});
+
+      });
+    });
+  });
+
+  test('400-should respond with error 400 due to incorrect properties of inc_votes', () => {
+    const addedVotes = { inc_votes: 'nine' };
+
+    return request(app)
+    .patch('/api/reviews/3')
+    .send(addedVotes)
+    .expect(400)
+    .then((response) => {
+      const currentVotes = response.body
+
+      expect(currentVotes).toMatchObject({msg: 'Bad Request'});
+
+    });
+  });
+
+
 });
+  
