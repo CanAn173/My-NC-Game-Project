@@ -11,10 +11,13 @@ error404Status,
 error500Status, 
 customErrorStatus} = require('./errorHandling');
 
+const cors = require('cors');
+
 const app = express();
 
 app.use(express.json());
 
+app.use(cors());
 
 // REQUESTS:
 
