@@ -5,7 +5,8 @@ getReviews,
 getReviewsById, 
 getCommentById, 
 postCommentById,
-changeInVotes
+changeInVotes,
+getAllUsers
 } = require("./models");
 
 // GET-/api/categories
@@ -92,3 +93,15 @@ exports.updatedVotesById = (request, response, next) => {
     next(error);
   })
 }
+
+// GET-/api/users
+exports.getUsers = (request, response, next) => {
+  getAllUsers()
+    .then((users) => {
+
+      response.status(200).send({users});
+    })
+    .catch((error) => {
+      next(error);
+    })
+};

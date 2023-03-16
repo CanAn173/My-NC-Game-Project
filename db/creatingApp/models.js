@@ -121,3 +121,20 @@ exports.changeInVotes = (review_id, { inc_votes }) => {
     return result.rows[0];
   });
 }
+
+// GET-/api/users
+exports.getAllUsers = () => {
+  return db.query(
+    `
+    SELECT * FROM users;
+    `
+  )
+  .then((result) => {
+
+    if(result.rows.length === 0) {
+      return Promise.reject({status: 404, msg: 'not found'})
+    }
+
+    return result.rows;
+  })
+}

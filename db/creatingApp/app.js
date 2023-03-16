@@ -4,7 +4,8 @@ getCustomerReviews,
 getCustomerReviewsById, 
 getCommentsByReviewId, 
 postCustomerReviewsById, 
-updatedVotesById} = require("./controller");
+updatedVotesById,
+getUsers} = require("./controller");
 
 const {error400Status,
 error404Status, 
@@ -33,6 +34,8 @@ app.post("/api/reviews/:review_id/comments",
 postCustomerReviewsById);
 
 app.patch("/api/reviews/:review_id", updatedVotesById);
+
+app.get("/api/users", getUsers);
 
 
 // ERROR HANDLING:

@@ -318,6 +318,33 @@ describe("/api", () => {
     });
   });
 
-
-});
+  describe("/api", () => {
+    describe("/api/users", () => {
+    it("GET-200, responds with a table of users", () => {
+      return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then((response) => {
   
+      const userBodies = response.body.users
+    
+      userBodies.forEach(body => {
+        expect(body).toHaveProperty('username', expect.any(String));
+        expect(body).toHaveProperty('name', expect.any (String));
+      });
+      expect(userBodies).toEqual(userData)
+      expect(userBodies).toHaveLength(4);
+      expect(userBodies).toBeInstanceOf(Array);
+      
+    })
+  })
+  
+    it("GET-404, responds with not found", () => {
+    return request(app)
+    .get("/api/user")
+    .expect(404)
+    })
+  });
+})
+  
+});
